@@ -1,11 +1,6 @@
 import tkinter as tk
 import time
 
-import pygetwindow as gw
-from pywinauto import findwindows
-import win32gui
-import win32con
-
 class Chronometer:
 
     def __init__(self, root):
