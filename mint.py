@@ -1,6 +1,26 @@
 import tkinter as tk
 import time
 
+import ctypes
+
+# Constants for window styles
+GWL_EXSTYLE = -20
+WS_EX_TOOLWINDOW = 0x00000080
+WS_EX_APPWINDOW = 0x00040000
+
+
+# settings so that the window still shows on the taskbar
+def set_app_window(root):
+    hwnd = ctypes.windll.user32.GetParent(root.winfo_id())
+    style = ctypes.windll.user32.GetWindowLongPtrW(hwnd, GWL_EXSTYLE)
+    style = style & ~WS_EX_TOOLWINDOW
+    style = style | WS_EX_APPWINDOW
+    res = ctypes.windll.user32.SetWindowLongPtrW(hwnd, GWL_EXSTYLE, style)
+    # re-assert the new window style
+    root.withdraw()
+    root.after(10, root.deiconify)
+
+
 class Chronometer:
 
     def __init__(self, root):
@@ -62,9 +82,6 @@ class Chronometer:
             self.elapsed_time = time.time() - self.start_time
             self.update_label()
 
-        if self.window_handle is not None:
-            win32gui.SetWindowPos(self.window_handle, win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
-
         self.root.after(50, self.update_clock)
         
     def update_label(self):
@@ -94,4 +111,5 @@ class Chronometer:
 if __name__ == "__main__":
     root = tk.Tk()
     chronometer = Chronometer(root)
+    root.after(10, set_app_window, root)
     root.mainloop()

@@ -8,6 +8,6 @@ I was using the default Windows Clock app for an always on top chronometer but i
 
 ![alt text](image.png)
 
-I like to place Mint on top of the Windows bar.
+I like to place Mint on top middle part of the screen.
 
-![alt text](image-1.png)
+![alt text](image-2.png)
