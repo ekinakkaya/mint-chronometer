@@ -1,12 +1,18 @@
 import tkinter as tk
 import time
 
+import pygetwindow as gw
+from pywinauto import findwindows
+import win32gui
+import win32con
+
 class Chronometer:
+
     def __init__(self, root):
         self.root = root
-        self.root.title("Chronometer")
+        self.root.title("Mint")
         self.root.geometry("320x50")
-        self.root.attributes('-topmost', True)
+        self.root.wm_attributes("-topmost", 1)
         self.root.resizable(False, False)
         self.root.overrideredirect(True)
 
@@ -14,7 +20,6 @@ class Chronometer:
         self.start_time = 0
         self.elapsed_time = 0
         
-        # For moving the window
         self.offset_x = 0
         self.offset_y = 0
         
@@ -61,6 +66,9 @@ class Chronometer:
         if self.running:
             self.elapsed_time = time.time() - self.start_time
             self.update_label()
+
+        if self.window_handle is not None:
+            win32gui.SetWindowPos(self.window_handle, win32con.HWND_TOPMOST, 0, 0, 0, 0, win32con.SWP_NOMOVE | win32con.SWP_NOSIZE)
 
         self.root.after(50, self.update_clock)
         
